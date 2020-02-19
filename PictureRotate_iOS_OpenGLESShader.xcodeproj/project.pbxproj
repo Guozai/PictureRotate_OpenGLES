@@ -15,6 +15,10 @@
 		0BD5995D23FD20FE0095388C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BD5995B23FD20FE0095388C /* LaunchScreen.storyboard */; };
 		0BD5996023FD20FE0095388C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5995F23FD20FE0095388C /* main.m */; };
 		0BD5996A23FD20FE0095388C /* PictureRotate_iOS_OpenGLESShaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5996923FD20FE0095388C /* PictureRotate_iOS_OpenGLESShaderTests.m */; };
+		0BD5997923FD21FF0095388C /* shader.frag in Resources */ = {isa = PBXBuildFile; fileRef = 0BD5997723FD21FF0095388C /* shader.frag */; };
+		0BD5997A23FD21FF0095388C /* shader.vert in Resources */ = {isa = PBXBuildFile; fileRef = 0BD5997823FD21FF0095388C /* shader.vert */; };
+		0BD5997C23FD22090095388C /* for_test.png in Resources */ = {isa = PBXBuildFile; fileRef = 0BD5997B23FD22090095388C /* for_test.png */; };
+		0BD5997F23FD22130095388C /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5997E23FD22130095388C /* GLView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +47,11 @@
 		0BD5996523FD20FE0095388C /* PictureRotate_iOS_OpenGLESShaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureRotate_iOS_OpenGLESShaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BD5996923FD20FE0095388C /* PictureRotate_iOS_OpenGLESShaderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PictureRotate_iOS_OpenGLESShaderTests.m; sourceTree = "<group>"; };
 		0BD5996B23FD20FE0095388C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0BD5997723FD21FF0095388C /* shader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.frag; sourceTree = "<group>"; };
+		0BD5997823FD21FF0095388C /* shader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.vert; sourceTree = "<group>"; };
+		0BD5997B23FD22090095388C /* for_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = for_test.png; sourceTree = "<group>"; };
+		0BD5997D23FD22130095388C /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
+		0BD5997E23FD22130095388C /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +93,9 @@
 		0BD5994C23FD20FC0095388C /* PictureRotate_iOS_OpenGLESShader */ = {
 			isa = PBXGroup;
 			children = (
+				0BD5997423FD214B0095388C /* GLView */,
+				0BD5997623FD21820095388C /* Shader */,
+				0BD5997523FD215F0095388C /* Texture */,
 				0BD5994D23FD20FC0095388C /* AppDelegate.h */,
 				0BD5994E23FD20FC0095388C /* AppDelegate.m */,
 				0BD5995023FD20FC0095388C /* SceneDelegate.h */,
@@ -106,6 +118,32 @@
 				0BD5996B23FD20FE0095388C /* Info.plist */,
 			);
 			path = PictureRotate_iOS_OpenGLESShaderTests;
+			sourceTree = "<group>";
+		};
+		0BD5997423FD214B0095388C /* GLView */ = {
+			isa = PBXGroup;
+			children = (
+				0BD5997D23FD22130095388C /* GLView.h */,
+				0BD5997E23FD22130095388C /* GLView.m */,
+			);
+			path = GLView;
+			sourceTree = "<group>";
+		};
+		0BD5997523FD215F0095388C /* Texture */ = {
+			isa = PBXGroup;
+			children = (
+				0BD5997B23FD22090095388C /* for_test.png */,
+			);
+			path = Texture;
+			sourceTree = "<group>";
+		};
+		0BD5997623FD21820095388C /* Shader */ = {
+			isa = PBXGroup;
+			children = (
+				0BD5997723FD21FF0095388C /* shader.frag */,
+				0BD5997823FD21FF0095388C /* shader.vert */,
+			);
+			path = Shader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,9 +226,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BD5997923FD21FF0095388C /* shader.frag in Resources */,
+				0BD5997C23FD22090095388C /* for_test.png in Resources */,
 				0BD5995D23FD20FE0095388C /* LaunchScreen.storyboard in Resources */,
 				0BD5995A23FD20FE0095388C /* Assets.xcassets in Resources */,
 				0BD5995823FD20FC0095388C /* Main.storyboard in Resources */,
+				0BD5997A23FD21FF0095388C /* shader.vert in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,6 +253,7 @@
 				0BD5994F23FD20FC0095388C /* AppDelegate.m in Sources */,
 				0BD5996023FD20FE0095388C /* main.m in Sources */,
 				0BD5995223FD20FC0095388C /* SceneDelegate.m in Sources */,
+				0BD5997F23FD22130095388C /* GLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
