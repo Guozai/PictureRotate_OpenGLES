@@ -1,3 +1,3 @@
 OpenGLES Shader iOS App - Picture Rotate
 
-![alt text](screenshots/PicRotate.png)
+![alt text](screenshots/PicRotate1.png)
