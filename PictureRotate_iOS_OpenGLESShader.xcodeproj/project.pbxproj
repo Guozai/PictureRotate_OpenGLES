@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BB2C2162402C4D000701FB8 /* GLESUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BB2C2142402C4D000701FB8 /* GLESUtils.m */; };
 		0BD5994F23FD20FC0095388C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5994E23FD20FC0095388C /* AppDelegate.m */; };
 		0BD5995223FD20FC0095388C /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5995123FD20FC0095388C /* SceneDelegate.m */; };
 		0BD5995523FD20FC0095388C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5995423FD20FC0095388C /* ViewController.m */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0BB2C2142402C4D000701FB8 /* GLESUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLESUtils.m; sourceTree = "<group>"; };
+		0BB2C2152402C4D000701FB8 /* GLESUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESUtils.h; sourceTree = "<group>"; };
 		0BD5994A23FD20FC0095388C /* PictureRotate_iOS_OpenGLESShader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PictureRotate_iOS_OpenGLESShader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BD5994D23FD20FC0095388C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0BD5994E23FD20FC0095388C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -94,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				0BD5997423FD214B0095388C /* GLView */,
-				0BD5997623FD21820095388C /* Shader */,
+				0BD5997623FD21820095388C /* Utils */,
 				0BD5997523FD215F0095388C /* Texture */,
 				0BD5994D23FD20FC0095388C /* AppDelegate.h */,
 				0BD5994E23FD20FC0095388C /* AppDelegate.m */,
@@ -137,13 +140,15 @@
 			path = Texture;
 			sourceTree = "<group>";
 		};
-		0BD5997623FD21820095388C /* Shader */ = {
+		0BD5997623FD21820095388C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0BB2C2152402C4D000701FB8 /* GLESUtils.h */,
+				0BB2C2142402C4D000701FB8 /* GLESUtils.m */,
 				0BD5997723FD21FF0095388C /* shader.frag */,
 				0BD5997823FD21FF0095388C /* shader.vert */,
 			);
-			path = Shader;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +258,7 @@
 				0BD5994F23FD20FC0095388C /* AppDelegate.m in Sources */,
 				0BD5996023FD20FE0095388C /* main.m in Sources */,
 				0BD5995223FD20FC0095388C /* SceneDelegate.m in Sources */,
+				0BB2C2162402C4D000701FB8 /* GLESUtils.m in Sources */,
 				0BD5997F23FD22130095388C /* GLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

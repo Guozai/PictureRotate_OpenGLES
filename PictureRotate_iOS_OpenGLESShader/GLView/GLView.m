@@ -8,6 +8,7 @@
 
 #import "GLView.h"
 @import OpenGLES;
+#import "GLESUtils.h"
 
 typedef struct
 {
@@ -79,7 +80,7 @@ GLint glViewAttributes[NUM_ATTRIBUTES];
     
     [self loadShaders];
     [self setupVBOs];
-    [self loadTexture:@"for_test"];
+    [GLESUtils loadTexture:@"for_test"];
 }
 
 - (void)setupLayer {
@@ -172,94 +173,20 @@ GLint glViewAttributes[NUM_ATTRIBUTES];
     return result;
 }
 
-- (GLuint)loadTexture:(NSString *)fileName {
-    // 获取图片的CGImageRef
-    CGImageRef spriteImage = [UIImage imageNamed:fileName].CGImage;
-    if (!spriteImage) {
-        NSLog(@"Failed to load image %@", fileName);
-        exit(1);
-    }
-    
-    // 读取图片的大小
-    size_t width = CGImageGetWidth(spriteImage);
-    size_t height = CGImageGetHeight(spriteImage);
-    
-    GLubyte * spriteData = (GLubyte *) calloc(width * height * 4, sizeof(GLubyte)); //rgba共4个byte
-    
-    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width * 4, CGImageGetColorSpace(spriteImage), kCGImageAlphaPremultipliedLast);
-    
-    // 在CGContextRef上绘图
-    CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), spriteImage);
-    
-    CGContextRelease(spriteContext);
-    
-    // 绑定纹理到默认的纹理ID（这里只有一张图片，故而相当于默认于片元着色器里面的colorMap，如果有多张图不可以这么做）
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
-    float fw = width, fh = height;
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fw, fh, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
-    
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
-    free(spriteData);
-    return 0;
-}
-
-- (GLuint)compileShader:(NSString *)shaderName withType:(GLenum)shaderType fileExtension:(NSString *)fileExt {
-    NSString *shaderPath = [[NSBundle mainBundle] pathForResource:shaderName ofType:fileExt];
-    NSError *error;
-    NSString *shaderString = [NSString stringWithContentsOfFile:shaderPath encoding:NSUTF8StringEncoding error:&error];
-    if (!shaderString) {
-        exit(1);
-    }
-    
-    GLuint shaderHandle = glCreateShader(shaderType);
-    
-    const char *shaderStringUTF8 = [shaderString UTF8String];
-    int shaderStringLength = (int)[shaderString length];
-    glShaderSource(shaderHandle, 1, &shaderStringUTF8, &shaderStringLength);
-    
-    glCompileShader(shaderHandle);
-    
-    GLint compileSuccess;
-    glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &compileSuccess);
-    if (compileSuccess == GL_FALSE) {
-        GLchar message[256];
-        glGetShaderInfoLog(shaderHandle, sizeof(message), 0, &message[0]);
-        NSString *messageString = [NSString stringWithUTF8String:message];
-        NSLog(@"glGetShaderiv shaderInfoLog: %@", messageString);
-        exit(1);
-    }
-    
-    return shaderHandle;
-}
-
 - (void)loadShaders {
-    GLuint vertexShader = [self compileShader:@"shader" withType:GL_VERTEX_SHADER fileExtension:@"vert"];
-    GLuint fragmentShader = [self compileShader:@"shader" withType:GL_FRAGMENT_SHADER fileExtension:@"frag"];
+    // Compile shaders
+    GLuint vertexShader = [GLESUtils compileShader:@"shader.vert" withType:GL_VERTEX_SHADER];
+    GLuint fragmentShader = [GLESUtils compileShader:@"shader.frag" withType:GL_FRAGMENT_SHADER];
     
-    programHandle = glCreateProgram();
-    glAttachShader(programHandle, vertexShader);
-    glAttachShader(programHandle, fragmentShader);
-    glLinkProgram(programHandle);
-    
-    GLint linkSuccess;
-    glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
-    if (linkSuccess == GL_FALSE) {
-        GLchar message[256];
-        glGetShaderInfoLog(programHandle, sizeof(message), 0, &message[0]);
-        NSString *messageString = [NSString stringWithUTF8String:message];
-        NSLog(@"glGetProgramiv ShaderIngoLog: %@", messageString);
-        exit(1);
+    programHandle = [GLESUtils loadShader:vertexShader withFragmentShader:fragmentShader];
+    if (programHandle == 0) {
+        NSLog(@" >> Error: Failed to load shaders .");
+        return;
     }
     
     glUseProgram(programHandle);
     
+    // Get attributes from shader
     glViewAttributes[ATTRIBUTE_POSITION] = glGetAttribLocation(programHandle, "position");
     glViewAttributes[ATTRIBUTE_TEXTURE_COORDINATES] = glGetAttribLocation(programHandle, "texCoordinates");
     glEnableVertexAttribArray(glViewAttributes[ATTRIBUTE_POSITION]);
@@ -295,8 +222,8 @@ GLint glViewAttributes[NUM_ATTRIBUTES];
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 使用VBO时，最后一个参数0为要获取参数在GL_ARRAY_BUFFER中的偏移量
-    glVertexAttribPointer(glViewAttributes[ATTRIBUTE_POSITION], 3, GL_FLOAT, GL_FALSE, sizeof(CustomVertex), 0);
-    glVertexAttribPointer(glViewAttributes[ATTRIBUTE_TEXTURE_COORDINATES], 2, GL_FLOAT, GL_FALSE, sizeof(CustomVertex), (GLvoid *)(sizeof(float) * 3));
+    glVertexAttribPointer(glViewAttributes[ATTRIBUTE_POSITION], 3, GL_FLOAT, GL_FALSE, sizeof(CustomVertex), NULL);
+    glVertexAttribPointer(glViewAttributes[ATTRIBUTE_TEXTURE_COORDINATES], 2, GL_FLOAT, GL_FALSE, sizeof(CustomVertex), (GLvoid *)(NULL + sizeof(float) * 3));
     
     // 获取shader里面的变量，这里记得要在glLinkProgram后面
     GLuint rotate = glGetUniformLocation(programHandle, "rotateMatrix");
